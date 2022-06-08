@@ -3,7 +3,7 @@ import psutil
 from fastapi import FastAPI
 import schedule
 from routers import cpu_performance_router
-from models.models import database
+from models.models import database, metadata, engine
 from fastapi_utils.tasks import repeat_every
 
 from models import models
@@ -34,7 +34,7 @@ app.include_router(cpu_performance_router)
 @app.on_event("startup")
 async def startup() -> None:
     # database_ = app.state.database
-    # metadata.create_all(engine)
+    metadata.create_all(engine)
     if not database.is_connected:
         await database.connect()
 
